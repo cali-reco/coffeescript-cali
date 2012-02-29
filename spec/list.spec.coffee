@@ -1,4 +1,4 @@
-List = require("..").List
+List=require("../src/list").List
 
 describe 'List', ->
 	it "Behaves like an array", ->

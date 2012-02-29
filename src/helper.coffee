@@ -1,4 +1,4 @@
-exports.Vector = class Vector
+class Vector
 	constructor: (@start, @end) ->  
 		@.__defineGetter__ "length", -> Util.distance @start, @end
 
@@ -78,4 +78,5 @@ Util =
 		
 		Math.abs(area/2)
 
-exports.Helper = Util
+(exports ? this).Vector = Vector
+(exports ? this).Helper = Util

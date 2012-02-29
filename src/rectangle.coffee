@@ -1,6 +1,7 @@
-Gesture = require('./gesture').Gesture
-Shape = require('./shape').Shape
-Evaluate = require('./evaluate').Evaluate
+unless WEB?
+	Gesture = require('./gesture').Gesture
+	Shape = require('./shape').Shape
+	Evaluate = require('./evaluate').Evaluate
 
 class Rectangle extends Shape
 	constructor: (rotated = true) -> 
@@ -24,4 +25,4 @@ class Rectangle extends Shape
 	setUp: (@scribble) ->
 		@points = @scribble.enclosingRect
 
-exports.Rectangle = Rectangle
+(exports ? this).Rectangle = Rectangle

@@ -27,4 +27,4 @@ class Stroke extends Array
 		
 		@_lastPoint = point
 
-exports.Stroke = Stroke
+(exports ? this).Stroke = Stroke

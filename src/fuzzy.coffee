@@ -19,5 +19,4 @@ class FuzzySet
 
 	distance: (value) ->
 
-
-exports.FuzzySet = FuzzySet
+(exports ? this).FuzzySet = FuzzySet

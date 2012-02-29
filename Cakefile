@@ -2,6 +2,25 @@ fs            = require 'fs'
 {print}       = require 'util'
 {spawn, exec} = require 'child_process'
 
+target = 'js/editor.js'
+
+sources = [
+        'list',
+        'stroke',
+        'polygon',
+        'helper',
+        'scribble'
+        'evaluate',
+        'fuzzy',
+        'gesture',
+        'shape',
+        'line',
+        'rectangle',
+        'circle',
+        'recognizer'
+].map (f) -> 'src/'+f+'.coffee'
+
+
 # ANSI Terminal Colors
 bold = '\033[0;1m'
 green = '\033[0;32m'
@@ -15,8 +34,9 @@ build = (watch, callback) ->
   if typeof watch is 'function'
     callback = watch
     watch = false
-  options = ['-c', '-o', 'lib', 'src']
+  options = ['-j', 'lib/cali.js', '-cb']
   options.unshift '-w' if watch
+  options = options.concat sources
 
   coffee = spawn 'coffee', options
   coffee.stdout.on 'data', (data) -> print data.toString()

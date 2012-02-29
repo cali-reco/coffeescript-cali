@@ -1,4 +1,4 @@
-{Scribble,Stroke} = require("..")
+Stroke = require("../src/stroke").Stroke
 
 describe "Scribble", ->
 	it "Stores its length", ->

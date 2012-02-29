@@ -1,6 +1,5 @@
 unless WEB?
 	Gesture = require('./gesture').Gesture
-
 class Command extends Gesture
 	constructor: ->
 		super
@@ -23,5 +22,5 @@ class Tap extends Command
 		@dom = 1
 		@scribble = scribble
 
-exports.Command = Command
-exports.Tap = Tap
+(exports ? this).Command = Command
+(exports ? this).Tap = Tap

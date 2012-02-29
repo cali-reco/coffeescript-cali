@@ -472,4 +472,5 @@ class Scribble extends Array
 			@convexHull[pf2],
 			@convexHull[pf0])
 
+(exports ? this).Scribble = Scribble
 exports.Scribble = Scribble

@@ -3,6 +3,9 @@ unless WEB?
 	Scribble = require("./scribble").Scribble
 	{Shape, Unknown} = require("./shape")
 	{Command, Tap} = require("./command")
+	Line = require("./line").Line
+	Rectangle = require("./rectangle").Rectangle
+	Circle = require("./circle").Circle
 
 class Recognizer
 	constructor : (@rotated = true, @alfaCut = 0) ->
@@ -14,9 +17,6 @@ class Recognizer
 		@_shapesList.push shape
 
 	addAllShapes: (rotated) ->
-		Line = require("./line").Line
-		Rectangle = require("./rectangle").Rectangle
-		Circle = require("./circle").Circle
 
 		@_shapesList = []
 		@_shapesList.push( 
@@ -60,4 +60,4 @@ class Recognizer
 			
 		shapes
 
-exports.Recognizer = Recognizer
+(exports ? this).Recognizer = Recognizer

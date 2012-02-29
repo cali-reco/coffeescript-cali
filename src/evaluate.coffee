@@ -1,7 +1,7 @@
 unless WEB?
 	Helper = require("./helper").Helper
 
-exports.Evaluate =
+Evaluate =
 	Tl_Pch: (sc) -> sc._len / sc.convexHull.perimeter
 	Pch2_Ach: (sc) -> Math.pow(sc.convexHull.perimeter,2) / sc.convexHull.area
 	Pch_Ns_Tl: (sc) -> sc.convexHull.perimeter/(sc.scribbleLength/sc.length)
@@ -60,3 +60,5 @@ exports.Evaluate =
 	Plq_Pch: (sc) -> sc.largestQuad.perimeter / sc.convexHull.perimeter
 	Plq_Per: (sc) -> sc.largestQuad.perimeter / sc.enclosingRect.perimeter
 	Plt_Plq: (sc) -> sc.largestTriangle.perimeter / sc.largestQuad.perimeter
+
+(exports ? this).Evaluate = Evaluate

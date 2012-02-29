@@ -31,4 +31,4 @@ class List extends Array
 		# insertion ok
 		return null
 
-exports.List = List
+(exports ? this).List = List

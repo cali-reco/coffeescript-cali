@@ -1,4 +1,4 @@
-{Recognizer, Scribble, Stroke} = require("..")
+Recognizer=require("../src/recognizer").Recognizer
 
 describe "CALI Recognizer", ->
 	

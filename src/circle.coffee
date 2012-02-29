@@ -35,4 +35,4 @@ class Circle extends Shape
 			y: Math.floor(@points[0].y + d1/2)
 		}
 
-exports.Circle = Circle
+(exports ? this).Circle = Circle

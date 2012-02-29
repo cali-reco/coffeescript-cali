@@ -45,5 +45,5 @@ Gesture::Features = (nodes...) ->
 			break if dom == 0
 	
 		dom
-		
-exports.Gesture = Gesture
+
+(exports ? this).Gesture = Gesture

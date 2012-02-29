@@ -34,4 +34,4 @@ class Polygon extends Array
 
 			@_perim
 
-exports.Polygon = Polygon
+(exports ? this).Polygon = Polygon

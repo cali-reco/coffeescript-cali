@@ -53,5 +53,5 @@ class Unknown extends Shape
 	constructor: -> @name = "Unknown"
 	evaluate: (scribble) -> 0
 
-exports.Shape = Shape
-exports.Unknown = Unknown
+(exports ? this).Shape = Shape
+(exports ? this).Unknown = Unknown
