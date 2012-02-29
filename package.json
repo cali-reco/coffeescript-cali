@@ -1,8 +1,9 @@
-{ "name": "cali-cofee", 
+{ "name": "cali-coffee", 
   "version": "0.0.1",
   "main": "index.js",
   "devDependencies":
   { "jasmine-node": ">= 1.0.21", 
-    "coffee-script": ">= 1.2.0"
+    "coffee-script": ">= 1.2.0",
+    "browserify": "*"
   }
 }

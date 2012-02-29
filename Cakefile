@@ -53,3 +53,10 @@ task 'watch', 'Recompile CoffeeScript source files when modified', ->
 
 task 'test', 'Run the test suite', ->
   build -> spec -> log ":)", green
+
+task 'dist', 'Build final js', ->
+  exec "./node_modules/.bin/browserify src/recognizer.coffee -o dist/cali.js", (err, stdout, stderr) ->
+    throw err if err
+    out = stdout + stderr
+    console.log out if out != ''
+    callback() if callback?
