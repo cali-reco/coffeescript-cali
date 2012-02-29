@@ -25,7 +25,10 @@ class Scribble extends Array
 				unless stroke instanceof Stroke
 					s = new Stroke()
 					for point in stroke
-						s.push(point...)
+						s.push(
+							point.x ? point[0],
+							point.y ? point[1], 
+							point.time ? point[2])
 					stroke = s
 				@push stroke
 
@@ -316,7 +319,7 @@ class Scribble extends Array
 
 		empty = 0
 
-		for i in [0..tri.length-1] 
+		for i in [0..3] 
 			dx = tri[i].x - tri[(i + 1) % 3].x
 			if dx == 0
 				m[i] = Number.MAX_VALUE
@@ -338,15 +341,15 @@ class Scribble extends Array
 
 				inter = 0
 
-				for v in m when v isnt 0
+				for k in [0..3] when m[k] isnt 0
 					if v >= Number.MAX_VALUE
-						x[i] = tri[i].x
-						if x[i] >= pt.x
+						x[k] = tri[k].x
+						if x[k] >= pt.x
 							inter++
 					else
-						x[i] = (pt.y - tri[i].y + m[i] * tri[i].x) / v
+						x[k] = (pt.y - tri[k].y + m[i] * tri[k].x) / v
 
-						if x[i] >= pt.x and (x[i] < (if (tri[i].x > tri[(i + 1) % 3].x) then tri[i].x else tri[(i + 1) % 3].x))
+						if x[k] >= pt.x and (x[k] < (if (tri[k].x > tri[(k + 1) % 3].x) then tri[k].x else tri[(k + 1) % 3].x))
 							inter++
 		
 				if inter % 2
@@ -473,4 +476,3 @@ class Scribble extends Array
 			@convexHull[pf0])
 
 (exports ? this).Scribble = Scribble
-exports.Scribble = Scribble

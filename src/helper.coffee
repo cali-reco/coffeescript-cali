@@ -1,8 +1,4 @@
-class Vector
-	constructor: (@start, @end) ->  
-		@.__defineGetter__ "length", -> Util.distance @start, @end
-
-Util =
+Helper =
 	distance: (p1, p2) ->
 		Math.sqrt( Math.pow(p2.x-p1.x,2) + Math.pow(p2.y-p1.y,2) )
 	triangleArea: (p1, p2, p3) ->
@@ -44,7 +40,7 @@ Util =
 
 	angle: (a, b) ->
 		if (a instanceof Vector) and (b instanceof Vector)
-			Math.atan2 Util.cross(a, b), Util.dot(a, b)
+			Math.atan2 Helper.cross(a, b), Helper.dot(a, b)
 		else 
 			Math.atan2 b.y - a.y, b.x - a.x
 
@@ -78,5 +74,9 @@ Util =
 		
 		Math.abs(area/2)
 
+class Vector
+	constructor: (@start, @end) ->  
+		@.__defineGetter__ "length", -> Helper.distance @start, @end
+
 (exports ? this).Vector = Vector
-(exports ? this).Helper = Util
+(exports ? this).Helper = Helper

@@ -9,7 +9,7 @@ class Stroke extends Array
 
 	push: (x, y, time=0) ->
 		point = {x: x, y: y, time: time}
-	
+
 		super(point)
 
 		if @length > 1

@@ -13,6 +13,7 @@ sources = [
         'evaluate',
         'fuzzy',
         'gesture',
+        'command',
         'shape',
         'line',
         'rectangle',
