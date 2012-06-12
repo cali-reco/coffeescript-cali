@@ -11,10 +11,10 @@ class Circle extends Shape
 
 		# initialize point array
 		@points = [{} for i in [0..4]]
-	
+		#console.log "Create Circle features"
 		@_features = Gesture::Features(
 			[Evaluate.Pch2_Ach, [12.5, 12.5, 13.2, 13.5]],
-			[Evaluate.Hollowness, [0, 0, 0, 0]]
+			[Evaluate.Hollowness, [0.0, 0.0, 0.0, 0.0]]
 		)
 	
 	#Computes the center and the radius of the recognized circle

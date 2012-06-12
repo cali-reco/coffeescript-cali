@@ -6,14 +6,16 @@ class Command extends Gesture
 		@type = "Command"
 
 	evalGlobalFeatures: (@scribble)-> 
-		@dom = @_features.evaluate(scribble)
+		@dom = @_features(scribble)
 		@scribble = null if (@dom <= 0)
-		@dom
+		if (@dom)
+			@setUp(scribble)
+		return @dom
 
 class Tap extends Command
 
 	constructor: ->
-		super
+		super()
 		@name = "Tap"
 		@point = {x:0, y:0}
 		

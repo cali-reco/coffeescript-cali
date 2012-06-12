@@ -18,6 +18,7 @@ sources = [
         'line',
         'rectangle',
         'circle',
+        'delete',
         'recognizer'
 ].map (f) -> 'src/'+f+'.coffee'
 

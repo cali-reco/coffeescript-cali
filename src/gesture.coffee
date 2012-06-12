@@ -31,9 +31,11 @@ Gesture::Features = (nodes...) ->
 		bwb ||= Number.MAX_VALUE
 		fuzzySet = new FuzzySet(a, b, a-awa, bwb-b)
 		# Evaluator function
-		_list.push( (scribble) -> 
-			#console.log "Evaluated #{fn} to #{fn(scribble)}"
-			fuzzySet.degOfMember fn(scribble)) 
+		do(fn,fuzzySet)->
+			_list.push( (scribble) -> 
+				#console.log "fuzzySet #{fuzzySet.a}, #{fuzzySet.b},#{fuzzySet.wa},#{fuzzySet.wb}}"
+				#console.log "Evaluated #{fn} to #{fn(scribble)}"
+				fuzzySet.degOfMember fn(scribble))  
 		
 
 	(scribble) ->

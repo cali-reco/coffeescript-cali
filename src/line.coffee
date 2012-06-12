@@ -17,6 +17,7 @@ class Line extends Shape
 			[Evaluate.Tl_Pch, [0, 0, 0.4, 0.45]],
 			[Evaluate.Pch_Ns_Tl, [5, 10]]
 		)
+		#console.log "Create Line features"
 		@_features = Gesture::Features [ Evaluate.Her_Wer, [0, 0, 0.06, 0.08] ]
 
 	#Computes the points of the recognized line

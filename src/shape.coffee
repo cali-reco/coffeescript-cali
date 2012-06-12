@@ -52,6 +52,6 @@ class Shape extends Gesture
 class Unknown extends Shape
 	constructor: -> @name = "Unknown"
 	evaluate: (scribble) -> 0
-
+	setUp: (scribble) -> 
 (exports ? this).Shape = Shape
 (exports ? this).Unknown = Unknown

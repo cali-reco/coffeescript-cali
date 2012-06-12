@@ -47,6 +47,8 @@ class Scribble extends Array
 			
 			@.__defineGetter__ "largestTriangle", -> @_largestTriangle || @getLargestTriangle()
 
+			@.__defineGetter__ "largestQuad", -> @_largestQuad || @getLargestQuad()
+
 			@.__defineGetter__ "boundingBox", -> @_boundingBox || @getBoundingBox()
 
 			@.__defineGetter__ "startingPoint", -> @[0][0]
@@ -314,12 +316,12 @@ class Scribble extends Array
 	getPtsInSmallTri: ->
 		tri = @smallTriangle
 
-		m = [0 for _ in [0..3]]
-		x = [0 for _ in [0..3]]
+		m = [0 for _ in [0...3]]
+		x = [0 for _ in [0...3]]
 
 		empty = 0
 
-		for i in [0..3] 
+		for i in [0...3] 
 			dx = tri[i].x - tri[(i + 1) % 3].x
 			if dx == 0
 				m[i] = Number.MAX_VALUE
@@ -341,13 +343,13 @@ class Scribble extends Array
 
 				inter = 0
 
-				for k in [0..3] when m[k] isnt 0
-					if v >= Number.MAX_VALUE
+				for k in [0...3] when m[k] isnt 0
+					if m[k] >= Number.MAX_VALUE
 						x[k] = tri[k].x
 						if x[k] >= pt.x
 							inter++
 					else
-						x[k] = (pt.y - tri[k].y + m[i] * tri[k].x) / v
+						x[k] = (pt.y - tri[k].y + m[k] * tri[k].x) / m[k]
 
 						if x[k] >= pt.x and (x[k] < (if (tri[k].x > tri[(k + 1) % 3].x) then tri[k].x else tri[(k + 1) % 3].x))
 							inter++
@@ -374,27 +376,21 @@ class Scribble extends Array
 		}
 
 		t1 = {
-			x: Math.floor((m3.x + (p1.x - m3.x)*0.6))
-			y: Math.floor((m3.y + (p1.y - m3.y)*0.6))
+			x: m3.x + (p1.x - m3.x)*0.6
+			y: m3.y + (p1.y - m3.y)*0.6
 		}
 		t2 = {
-			x: Math.floor((m1.x + (p2.x - m1.x)*0.6))
-			y: Math.floor((m1.y + (p2.y - m1.y)*0.6))
+			x: m1.x + (p2.x - m1.x)*0.6
+			y: m1.y + (p2.y - m1.y)*0.6
 		}
 		t3 = { 	
-			x: Math.floor((m2.x + (p3.x - m2.x)*0.6))
-			y: Math.floor((m2.y + (p3.y - m2.y)*0.6))
+			x: m2.x + (p3.x - m2.x)*0.6
+			y: m2.y + (p3.y - m2.y)*0.6
 		}
 		
 		new Polygon(t1, t2, t3, t1)
-		
-	#Computes the largest triangle that fits inside the convex hull
-	# Notes: We used the algorithm described by J.E. Boyce and D.P. Dobkin.
-	getLargestTriangle: ->
-		pts = @convexHull
-		np = @convexHull.length
-
-		compRootedTri = (ripa, ripb, ripc) ->
+	
+	compRootedTri: (pts, ripa, ripb, ripc, np) ->
 			
 			trigArea = 0
 		
@@ -403,13 +399,33 @@ class Scribble extends Array
 			ib = ripb;
 			for ic in [ripc...np-1]
 				pa = pts[ia]; pb = pts[ib]; pc = pts[ic]
-				if (area=Helper.triangleArea(pa, pb, pc)) > trigArea
+				if (ic < (np - 1)) and (area=Helper.triangleArea(pa, pb, pc)) > trigArea
 					ripc = ic
 					trigArea = area
 				else
 					break
-			trigArea
+			[trigArea, ripc]
 
+	compRootedQuad: (pts,ripa,ripb,ripc,ripd,np) ->
+		trigArea = 0
+		# computes one rooted triangle        
+		pa = pts[ripa]
+		pb = pts[ripb]
+		pc = pts[ripc] 
+		for id in [ripd...np - 1]
+			pd = pts[id]
+			if (id < (np - 1)) and (area = Helper.quadArea(pa,pb,pc,pd)) > trigArea
+				ripd = id
+				trigArea = area
+			else
+				break
+		[trigArea, ripd]
+		
+	#Computes the largest triangle that fits inside the convex hull
+	# Notes: We used the algorithm described by J.E. Boyce and D.P. Dobkin.
+	getLargestTriangle: ->
+		pts = @convexHull
+		np = @convexHull.length
 		if (@convexHull.length <= 3)
 			@_largestTriangle = new Polygon()
 			@_largestTriangle.push(pt) for pt in @convexHull
@@ -424,7 +440,7 @@ class Scribble extends Array
 				ic = ib + 1
 			else
 				ic = 2
-			area = compRootedTri(ia, ib, ic)
+			[area, ic] = @compRootedTri(pts,ia, ib, ic,np)
 			if (area > triArea)
 				triArea = area;
 				ripa = ia;
@@ -455,7 +471,7 @@ class Scribble extends Array
 					ic = ripc + 1
 				else
 					ic = ripc
-				area = compRootedTri(ia, ib, ic)
+				[area, ic] = @compRootedTri(pts,ia, ib, ic,np)
 				if (area > triArea)
 					triArea = area
 					fipa = ia
@@ -474,5 +490,121 @@ class Scribble extends Array
 			@convexHull[pf1],
 			@convexHull[pf2],
 			@convexHull[pf0])
+
+	getLargestQuad: ->
+		pts = @convexHull
+		np = @convexHull.length
+
+		ripa = ripb = ripc = 0 # indexes for rooted triangle
+
+
+		if np <= 4
+			@_largestQuad = new Polygon();
+			for i in [0...np] 
+				@_largestQuad.push(pts[i]);
+			for i in [np...5]
+				@_largestQuad.push(pts[0]);
+
+			return @_largestQuad
+			
+
+	# computes one rooted triangle
+		ia = area = triArea = 0
+		for ib in [1..np-2]
+			if (ib >= 2)
+				ic = ib + 1
+			else
+				ic = 2
+			[area,ic] = @compRootedTri(pts,ia, ib, ic,np)
+			if (area > triArea)
+				triArea = area;
+				ripa = ia;
+				ripb = ib;
+				ripc = ic;
+
+
+
+		# computes the rooted quadrilateral based on a rooted triangle
+		fipa = fipb = fipc = fipd = 0 # indexes for final values
+		id = ib0 = quadArea = 0
+
+		quadArea = 0;
+		for ib in [ripa+1..ripb]
+			if ib == ripb
+				ic0 = ripb + 1
+			else
+				ic0 = ripb
+			for ic in [ic0..ripc]
+				if ic == ripc
+					id = ripc + 1
+				else
+					id = ripc
+				
+				[area, id] = @compRootedQuad(pts, ia, ib, ic, id, np)
+				if area > quadArea
+					quadArea = area
+					fipa = ia
+					fipb = ib
+					fipc = ic
+					fipd = id
+					
+		
+		# computes other quadrilaterals and choose the largest one
+		finalArea = quadArea
+		pf0 = fipa
+		pf1 = fipb
+		pf2 = fipc
+		pf3 = fipd
+		ripa = fipa
+		ripb = fipb
+		ripc = fipc
+		ripd = fipd
+
+		for ia in [ripa+1..ripb]
+			if ia == ripb
+				ib0 = ripb + 1
+			else
+				ib0 = ripb
+		
+			quadArea = 0
+			area = 0
+
+			for ib in [ib0..ripc]
+				if ib == ripc
+					ic0 = ripc + 1
+				else 
+					ic0 = ripc
+
+				for ic in [ic0..ripd]
+					if ic == ripd
+						id = ripd + 1
+					else
+						id = ripd		
+
+					[area, id] = @compRootedQuad(pts, ia, ib, ic, id, np)
+					if area > quadArea
+						quadArea = area
+						fipa = ia
+						fipb = ib
+						fipc = ic
+						fipd = id
+
+			if quadArea > finalArea
+				finalArea = quadArea
+				pf0 = fipa
+				pf1 = fipb
+				pf2 = fipc
+				pf3 = fipd
+				
+		#Tranfer the points to a polygon
+		@_largestQuad = new Polygon(
+			@convexHull[pf0],
+			@convexHull[pf1],
+			@convexHull[pf2],
+			@convexHull[pf3],
+			@convexHull[pf0])
+
+
+
 
 (exports ? this).Scribble = Scribble

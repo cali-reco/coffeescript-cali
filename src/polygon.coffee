@@ -16,8 +16,10 @@ class Polygon extends Array
 					return @_area = 0
 				
 				
-				for i in [0..@length-1]
+				for i in [0..@length-2]
 					@_area += @[i].x * @[i+1].y - @[i+1].x * @[i].y
+					
+				
 				
 				@_area /= 2
 
@@ -25,13 +27,13 @@ class Polygon extends Array
 		
 		
 		@.__defineGetter__ "perimeter", ->
-			if @_perim == 0
-				for i in [0..@length-1]
-					@_perim += Helper::distance(@[i], @[i+1])
+			if @_perimeter == 0
+				for i in [0...@length-1]
+					@_perimeter += Helper.distance(@[i], @[i+1])
 
 				if @length < 3 
-					@_perim *= 2
+					@_perimeter *= 2
 
-			@_perim
+			@_perimeter
 
 (exports ? this).Polygon = Polygon

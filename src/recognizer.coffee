@@ -6,6 +6,7 @@ unless WEB?
 	Line = require("./line").Line
 	Rectangle = require("./rectangle").Rectangle
 	Circle = require("./circle").Circle
+	Delete = require("./delete").Delete
 
 class Recognizer
 	constructor : (@rotated = true, @alfaCut = 0) ->
@@ -20,7 +21,7 @@ class Recognizer
 
 		@_shapesList = []
 		@_shapesList.push( 
-			#new CIDelete(),
+			new Delete(),
 			#new CIWavyLine(),
 			new Line(rotated),
 			#new CITriangle(rotated),

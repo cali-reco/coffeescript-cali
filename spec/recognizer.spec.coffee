@@ -47,10 +47,10 @@ describe "CALI Recognizer", ->
 	it "Recognizes a Rectangle", ->
 		Rectangle = require("../src/rectangle").Rectangle
 
-		recognizer = new Recognizer()
+		recognizer = new Recognizer(true,0.7)
 		recognizer.addShape new Rectangle()
 
-		stroke = [[-50,50], [50,50], [50,-50], [-50,-50]]
+		stroke = [[-50,-50],[-50,50],[50,50], [50,-50],[-50,-50]]
 
 		shapes = recognizer.recognize [stroke]
 		
@@ -65,5 +65,25 @@ describe "CALI Recognizer", ->
 		expect(1).toEqual shapes.length, "wrong length"
 		expect("Rectangle").toEqual shapes[0].name, "wrong type. Got a #{shapes[0].type}"
 
+	it "Recognizes a Delete", ->
+		Delete = require("../src/delete").Delete
+
+		recognizer = new Recognizer()
+		recognizer.addShape new Delete()
+
+		stroke = [[-50,50], [50,50],[-50,-50], [50,-50], [-50,50]]
+
+		shapes = recognizer.recognize [stroke]
+		
+		expect(1).toEqual shapes.length, "wrong length"
+		expect("Delete").toEqual shapes[0].name, "wrong type. Got a #{shapes[0].type}"
+		
+		# Now add all shapes and test again
+		recognizer.addAllShapes()	
+
+		shapes = recognizer.recognize [stroke]
+		
+		expect(1).toEqual shapes.length, "wrong length"
+		expect("Delete").toEqual shapes[0].name, "wrong type. Got a #{shapes[0].type}"
 
 
